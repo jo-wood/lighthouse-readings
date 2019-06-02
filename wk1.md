@@ -169,6 +169,12 @@ readerStream.pipe(writerStream);
 - they work for any kind of I/O such as Network IO via `http` and `https`
 - see GET request example with script for Monty Python in w1-reading.js file
 
+- the response we get from passing argument `response` to the callback function and logging response will be a very long response... not the body we expected when view the page source in the browser.
+- the response seems to be an object called `IncomingMessage`
+  - researching this term in docs, this object is a stream
+  - we can read/write data to network streams, however since this is an incoming (input) stream, we can only really read from this instance
+  
+
 ## Domain Name System
 
 ## What is an API
