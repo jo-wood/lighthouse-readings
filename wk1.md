@@ -10,7 +10,7 @@
 
 * [Clean Code](#clean-code)
 
-* [HTTP in Depth](#http-in-depth)
+* [HTTP in Depth](#http)
 
 * [JSON](#json)
 
@@ -111,13 +111,24 @@ Verbose & Trace Option:
 - to help know what is happening use `-v` in curl request , will print details
 - `-trace` will provide a full trace dump of all incoming and outgoing data to the given file if more info needed
 
-
-
-
-
 ## File IO in NodeJS
+- **Note:** **Callback functions in Node pass` err` as the first argument** (by convention). That means if there was a problem writing the file as requested, then the `err` argument will specify the exception details, otherwise it will be `null`.
+
+- in the `fs` module of node, async methods take the last parameter as teh completion fn callback
+
+- best to use async rather than the sync methods as asyn never block a program during its execution
+
+- fs methods include:
+  - `fs.open(path, flags[, mode], callback)`
+  - `fs.stat(path cb(err, stats))` where stats has useful methods as well ie, stats.isFile(), stats.isCharacterDevice() etc *(info on file)* 
+  - `fs.writeFile(filename, data[, options], cb)`
+- *don't forget what running readFile and rendering cb fn's second arg of the actual data, turn data.toString() when running in node terminal 
+
+- fs.read... also fs.close... fs.unlink (to delete a file) .. fs.mkdir(path[, mode], cb)
+
 
 ## Character Encoding
+
 
 ## Streams in NodeJS
 
