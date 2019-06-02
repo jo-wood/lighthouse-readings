@@ -129,10 +129,45 @@ Verbose & Trace Option:
 
 ## Character Encoding
 
+- ASCII was standard english characters plus some symbol char, and only wen tup to 127 therefore leaving an entire bit to spare (0-127 being 7 digits in binary)
+- problem was many used the codes 128-255 for their own purposes/ and international transfer with character codes such as 130 ,some PCs coded this as accented e, and american sends to israel where a hebrew letter was coded to the computers sold in israel, all those cases would arrive incorrectly 
+- within asian alphabets (thousands of letters would never fit into 8 bits). therefore used dbl byte character set, and *some* were stored in 1 byte and others took 2. 
+
+- do not assume a plain text store in memory (file) is ASCII, need to KNOW the encoding or else it can not display correctly to user (and you can't interpret it)
+- ie. for an email message, you are expected to have a string in the head of the form : 
+  - **Content-Type: text/plain; charset="UTF-8"**
+- in HTML, technically need to know the encoding of the file request before reading it? but luckily almost every encoding in common use does the same thing with characters btwn 32 and 127 so you can always get this far in the HTML page with starting to use funny letters:
+  - <html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  - **THIS META TAG NEEDS TO BE FIRST THING IN HEAD TAG**
+
 
 ## Streams in NodeJS
+- various types of streams that essentially allow us to read (or write) data in a cont way by sending data in chunks... focus will be on readable and writeable streams
+- each stream is an EventEmitter instance (& throws several events at different instances of time) ie:
+  - **data** is event fired when data is available to read
+  - **end** is fired when there is no more data to read
+  - **error** is fired when there is any error recieving OR writing data
+  - **finish** is fired when all the data has been flushed to underlying system
+- piping streams from one files output to another files input:
+- can also use piping and chaining to compress a file and then decompreess the same into a new file (use require(zlib') to create a .gz of the .txt file for example)
+```javascript
+var fs = require("fs");
+
+// Create a readable stream
+var readerStream = fs.createReadStream('input.txt');
+
+// Create a writable stream
+var writerStream = fs.createWriteStream('output.txt');
+
+// Pipe the read and write operations
+// read input.txt and write data to output.txt
+readerStream.pipe(writerStream);
+```
 
 ## HTTP Client and Streams
+- node does not use streams for readng and writing to the file system
+- they work for any kind of I/O such as Network IO via `http` and `https`
+- see GET request example with script for Monty Python in w1-reading.js file
 
 ## Domain Name System
 
