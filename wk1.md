@@ -178,5 +178,80 @@ readerStream.pipe(writerStream);
 
 
 ## Domain Name System
+- use command line tool - `dig` to trace a DNS request
+- when tracing is enabled, dig makes iterative queries to resolve the name being looked up
+- it will follow referrals from the root servers, showing the answer from each server that was used to resolve the lookup 
+`dig +trace google.com` produces list of 268bytes from a root IP in < 100ms: ie:
+```
+; <<>> DiG 9.8.3-P1 <<>> +trace google.com
+;; global options: +cmd
+.           11205   IN  NS  a.root-servers.net.
+.           11205   IN  NS  b.root-servers.net.
+.           11205   IN  NS  c.root-servers.net.
+.           11205   IN  NS  d.root-servers.net.
+.           11205   IN  NS  e.root-servers.net.
+.           11205   IN  NS  f.root-servers.net.
+.           11205   IN  NS  g.root-servers.net.
+.           11205   IN  NS  h.root-servers.net.
+.           11205   IN  NS  i.root-servers.net.
+.           11205   IN  NS  j.root-servers.net.
+.           11205   IN  NS  k.root-servers.net.
+.           11205   IN  NS  l.root-servers.net.
+.           11205   IN  NS  m.root-servers.net.
+;; Received 228 bytes from 8.8.8.8#53(8.8.8.8) in 13 ms
+
+com.            172800  IN  NS  a.gtld-servers.net.
+com.            172800  IN  NS  b.gtld-servers.net.
+com.            172800  IN  NS  c.gtld-servers.net.
+com.            172800  IN  NS  d.gtld-servers.net.
+com.            172800  IN  NS  e.gtld-servers.net.
+com.            172800  IN  NS  f.gtld-servers.net.
+com.            172800  IN  NS  g.gtld-servers.net.
+com.            172800  IN  NS  h.gtld-servers.net.
+com.            172800  IN  NS  i.gtld-servers.net.
+com.            172800  IN  NS  j.gtld-servers.net.
+com.            172800  IN  NS  k.gtld-servers.net.
+com.            172800  IN  NS  l.gtld-servers.net.
+com.            172800  IN  NS  m.gtld-servers.net.
+;; Received 488 bytes from 192.203.230.10#53(192.203.230.10) in 10 ms
+
+google.com.     172800  IN  NS  ns2.google.com.
+google.com.     172800  IN  NS  ns1.google.com.
+google.com.     172800  IN  NS  ns3.google.com.
+google.com.     172800  IN  NS  ns4.google.com.
+;; Received 164 bytes from 192.41.162.30#53(192.41.162.30) in 159 ms
+```
+Notice that there were four request-response stages,
+
+1. Starting the journey at the root name servers - (*.root-servers.net)
+2. continuing to the .com top level domain (TLD) - (*.gtld-servers.net)
+3. followed by the google.com Name Servers (NS) - (ns*.google.com)
+4. and concluded with fifteen (!) Address Records (A) - (66.199.151.*)
+
+**IP addresses listed in the A Records are servers hosting Google.com, many websites only require one web server node - however scale of course provides a collection of servers to choose from
+
+|                                 |Similarities    | Differences |
+|---------------------------------|:--------------:|------------:|
+|dig +trace www.lighthouselabs.ca |28 bytes in 1ms |             |
+|dig +trace canada.gc.ca          |same            |             |
+|dig +trace bbc.co.uk             |same            | but 0ms     |
+*all recieved from from 10.0.2.3#53(10.0.2.3)*
+
+- didn't follow the above example bc there are various ways that DNS can be set up
+- ? not showing answer? other commands for this
 
 ## What is an API
+
+- good simplified explanation: APIs are sets of requirements that govern how one application can talk to another 
+- **windows to the code**
+- system-level APIs make it possible for applications like office to cut and paste into excel & for office apps to run on top of an OS in the first place
+- within web terms, APIs make if possible for big services to let other apps 'piggyback' on their offerings **Yelp, displays nearby restaurants on a Google Map in its app**
+
+- APIs do so by 'exposing' some of the program's internal fns to the outside world in a limited fashion
+- therefore can share data, take actions without requiring devs to share all of their software's code (secret AND inefficient if did)
+- REpresentional State Transfer
+- REST api calls similar to any server request (client -> server) but in this case `maps.googleapis.com`
+- the response from REST typically a JSON object
+- HTTP Reqeust Methods with GET and POST (write data to the api request) - best practice to put data in the body of the request, normal web browser wouldn't allow this - could use Postman Client, and can add body to your http request
+- authentication across many api's use OAuth , using access tokens
+- 
