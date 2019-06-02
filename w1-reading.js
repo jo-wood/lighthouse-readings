@@ -13,8 +13,12 @@ var options = {
 // called by https when the request is made.
 var callback = function (res) {
   console.log('In response handler callback!');
-  console.log('Response: ', res);
-  
+
+  //now output the data as it comes in (print length for curiosity)
+  res.on('data', function(chunk) {
+    console.log('[-- CHUNNK OF LENGTH ' + chunk.length + ' --]');
+    console.log(chunk.toString());
+  });
 }
 
 console.log("I'm about to make the request!");

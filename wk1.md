@@ -173,7 +173,9 @@ readerStream.pipe(writerStream);
 - the response seems to be an object called `IncomingMessage`
   - researching this term in docs, this object is a stream
   - we can read/write data to network streams, however since this is an incoming (input) stream, we can only really read from this instance
-  
+
+- in the case of the example - only one CHUNK OF LENGTH output line which means the `data` cb fn was only called once (bc it was a small amount of data for the server to send us back)
+
 
 ## Domain Name System
 
